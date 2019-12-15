@@ -1,0 +1,4 @@
+# PageHelper-Mybatis
+PageHelper+Mybatis一对多并对多的表进行筛选查询，利用Java8流式处理
+
+#通过Mybatis的简单嵌套查询来实现，一对多的pageHelper分页效果，并对子表进行筛选查询。项目中应用了Java8的流式处理来进行对象的互转，和结果的映射
