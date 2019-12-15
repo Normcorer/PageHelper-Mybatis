@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zyj.page.dao.SmsChannelMapper">
+    <resultMap id="MasterPageInfo" type="SmsChannelDO">
+        <id column="CHAN_ID" property="chanId"></id>
+        <result column="CHAN_NAME" property="chanName"></result>
+        <result column="GROUP_ID" property="groupId"></result>
+        <result column="CREATE_BY" property="createBy"></result>
+        <collection property="relationDo" ofType="cn.zyj.page.model.RelationDo" javaType="java.util.List" select="selectProvider" column="CHAN_ID">
+            <id column="CHAN_ID" property="chanId"></id>
+            <id column="PROVIDER_ID" property="providerId"></id>
+        </collection>
+    </resultMap>
+    <resultMap id="Relation" type="cn.zyj.page.model.RelationDo">
+        <id column="CHAN_ID" property="chanId"></id>
+        <id column="PROVIDER_ID" property="providerId"></id>
+    </resultMap>
+    
+    <select id="selectByPage"  parameterType="java.lang.Short" resultMap="MasterPageInfo">
+    select * from t_smschannel
+    <if test="providerId != 0">
+        where CHAN_ID IN(SELECT CHAN_ID FROM t_smschannel_relation where PROVIDER_ID = #{providerId})
+    </if>
+    </select>
+
+    <select id="selectProvider" parameterType="java.lang.Short" resultMap="Relation">
+        select * from t_smschannel_relation where CHAN_ID = #{chanId}
+    </select>
+</mapper>
